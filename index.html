@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的日历 — 日程 & 课表</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="utils.js"></script>
+    <script src="chinese-calendar.js"></script>
+</head>
+<body>
+    <!-- 深色模式切换按钮 -->
+    <button id="themeToggle" class="theme-toggle" title="切换深色模式">🌙</button>
+
+    <div class="app">
+        <!-- 左侧边栏 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">📅</div>
+                <h1>我的日历</h1>
+                <p class="subtitle">日程 & 课表管理</p>
+            </div>
+
+            <!-- 迷你日历 -->
+            <div class="mini-calendar">
+                <div class="mini-cal-header">
+                    <button id="prevMonth" class="nav-btn">‹</button>
+                    <div class="year-month-selector">
+                        <select id="yearSelect" class="year-month-select"></select>
+                        <span class="year-month-sep">年</span>
+                        <select id="monthSelect" class="year-month-select"></select>
+                        <span class="year-month-sep">月</span>
+                    </div>
+                    <button id="nextMonth" class="nav-btn">›</button>
+                </div>
+                <div class="mini-cal-grid">
+                    <div class="day-name">一</div>
+                    <div class="day-name">二</div>
+                    <div class="day-name">三</div>
+                    <div class="day-name">四</div>
+                    <div class="day-name">五</div>
+                    <div class="day-name">六</div>
+                    <div class="day-name">日</div>
+                </div>
+                <div id="miniCalDays" class="mini-cal-days"></div>
+            </div>
+
+            <!-- 今日概览 -->
+            <div class="today-overview">
+                <h3>📌 今日概览</h3>
+                <div id="todaySummary" class="summary-content"></div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 头部 -->
+            <header class="main-header">
+                <div class="header-left">
+                    <h2 id="selectedDateTitle" class="date-title"></h2>
+                    <p class="date-subtitle">日程安排</p>
+                </div>
+                <div class="header-right">
+                    <button id="btnAddSchedule" class="btn btn-primary">
+                        <span class="btn-icon">+</span>
+                        添加日程
+                    </button>
+                    <button id="btnAddTimetable" class="btn btn-secondary">
+                        <span class="btn-icon">📚</span>
+                        添加课程
+                    </button>
+                    <button id="btnImport" class="btn btn-accent">
+                        <span class="btn-icon">📥</span>
+                        一键导入课表
+                    </button>
+                </div>
+            </header>
+
+            <!-- 标签页 -->
+            <div class="tabs">
+                <button class="tab active" data-tab="schedule">📋 日程管理</button>
+                <button class="tab" data-tab="timetable">📚 课程表</button>
+            </div>
+
+            <!-- 日程内容 -->
+            <div id="schedulePanel" class="tab-panel active">
+                <div id="scheduleList" class="schedule-list"></div>
+            </div>
+
+            <!-- 课表内容 -->
+            <div id="timetablePanel" class="tab-panel">
+                <div class="timetable-toolbar">
+                    <div class="timetable-info">
+                        <button id="prevWeek" class="nav-btn">‹</button>
+                        <div class="week-selector">
+                            <select id="weekSelect" class="week-select"></select>
+                            <span class="week-sep">周</span>
+                        </div>
+                        <button id="nextWeek" class="nav-btn">›</button>
+                        <span class="class-count" id="classCount"></span>
+                    </div>
+                    <div class="timetable-actions">
+                        <button id="btnTimetableSettings" class="btn btn-sm btn-secondary">⚙️ 设置</button>
+                        <button id="btnClearTimetable" class="btn btn-sm btn-danger">🗑️ 清空课表</button>
+                    </div>
+                </div>
+                <div id="timetableGrid" class="timetable-grid"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 添加/编辑日程模态框 -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="scheduleModalTitle">添加日程</h3>
+                <button class="modal-close" data-modal="scheduleModal">×</button>
+            </div>
+            <form id="scheduleForm" class="modal-form">
+                <div class="form-group">
+                    <label>标题</label>
+                    <input type="text" id="schedTitle" placeholder="输入日程标题" required>
+                </div>
+                <div class="form-group">
+                    <label>描述</label>
+                    <input type="text" id="schedDesc" placeholder="添加描述（可选）">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>日期</label>
+                        <input type="date" id="schedDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>开始时间</label>
+                        <input type="time" id="schedStart" value="09:00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>结束时间</label>
+                        <input type="time" id="schedEnd" value="10:00" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>颜色标记</label>
+                    <div class="color-picker" id="schedColorPicker">
+                        <div class="color-option active" data-color="#E07A5F" style="background:#E07A5F"></div>
+                        <div class="color-option" data-color="#3D405B" style="background:#3D405B"></div>
+                        <div class="color-option" data-color="#81B29A" style="background:#81B29A"></div>
+                        <div class="color-option" data-color="#F2CC8F" style="background:#F2CC8F"></div>
+                        <div class="color-option" data-color="#E63946" style="background:#E63946"></div>
+                        <div class="color-option" data-color="#457B9D" style="background:#457B9D"></div>
+                    </div>
+                </div>
+                <input type="hidden" id="schedId">
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" data-modal="scheduleModal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加/编辑课程模态框 -->
+    <div id="timetableModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="timetableModalTitle">添加课程</h3>
+                <button class="modal-close" data-modal="timetableModal">×</button>
+            </div>
+            <form id="timetableForm" class="modal-form">
+                <div class="form-group">
+                    <label>课程名称</label>
+                    <input type="text" id="ttCourse" placeholder="输入课程名称" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>教师</label>
+                        <input type="text" id="ttTeacher" placeholder="授课教师">
+                    </div>
+                    <div class="form-group">
+                        <label>教室</label>
+                        <input type="text" id="ttLocation" placeholder="上课地点">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>星期</label>
+                    <select id="ttDay" required>
+                        <option value="1">周一</option>
+                        <option value="2">周二</option>
+                        <option value="3">周三</option>
+                        <option value="4">周四</option>
+                        <option value="5">周五</option>
+                        <option value="6">周六</option>
+                        <option value="7">周日</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>节次</label>
+                    <select id="ttPeriod" required>
+                        <option value="1-2">第1-2节 (08:10-09:55)</option>
+                        <option value="3-4">第3-4节 (10:10-11:55)</option>
+                        <option value="5-6">第5-6节 (14:10-15:55)</option>
+                        <option value="7-8">第7-8节 (16:10-17:55)</option>
+                        <option value="9-10">第9-10节 (19:10-20:55)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>上课周数 <span class="week-hint">（点击选择，再点取消选择）</span></label>
+                    <div class="week-quick-actions">
+                        <button type="button" class="btn btn-sm btn-outline" onclick="app.selectAllWeeks()">全选</button>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="app.clearAllWeeks()">全不选</button>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="app.selectOddWeeks()">单周</button>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="app.selectEvenWeeks()">双周</button>
+                    </div>
+                    <div class="week-grid" id="weekGrid"></div>
+                    <input type="hidden" id="ttWeeks" value="">
+                </div>
+                <div class="form-group">
+                    <label>颜色标记</label>
+                    <div class="color-picker" id="ttColorPicker">
+                        <div class="color-option active" data-color="#81B29A" style="background:#81B29A"></div>
+                        <div class="color-option" data-color="#E07A5F" style="background:#E07A5F"></div>
+                        <div class="color-option" data-color="#3D405B" style="background:#3D405B"></div>
+                        <div class="color-option" data-color="#F2CC8F" style="background:#F2CC8F"></div>
+                        <div class="color-option" data-color="#E63946" style="background:#E63946"></div>
+                        <div class="color-option" data-color="#457B9D" style="background:#457B9D"></div>
+                    </div>
+                </div>
+                <input type="hidden" id="ttId">
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" data-modal="timetableModal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 一键导入课表模态框 -->
+    <div id="importModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3>📥 一键导入课表</h3>
+                <button class="modal-close" data-modal="importModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="import-section">
+                    <h4>🎯 快速导入示例课表</h4>
+                    <p class="import-desc">点击下方按钮，一键导入一份完整的大学课表示例数据</p>
+                    <button id="btnImportSample" class="btn btn-primary btn-lg">
+                        <span class="btn-icon">✨</span>
+                        一键导入示例课表
+                    </button>
+                </div>
+
+                <div class="import-divider">
+                    <span>或者</span>
+                </div>
+
+                <div class="import-section">
+                    <h4>📋 自定义导入</h4>
+                    <p class="import-desc">上传 JSON 文件或粘贴数据</p>
+                    <div class="import-format">
+                        <code>
+[<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"courseName": "高等数学",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"teacher": "张教授",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"location": "教学楼A301",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"dayOfWeek": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"startTime": "08:00",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"endTime": "09:40",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"color": "#E07A5F"<br>
+&nbsp;&nbsp;}<br>
+]
+                        </code>
+                    </div>
+                    <input type="file" id="jsonFileInput" accept=".json" class="file-input">
+                    <textarea id="importJson" class="import-textarea" placeholder='或在此粘贴 JSON 数据...'></textarea>
+                    <div class="import-actions">
+                        <button id="btnImportJson" class="btn btn-secondary">📥 导入数据</button>
+                        <button id="btnExportJson" class="btn btn-cancel">📤 导出当前课表</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 课表设置模态框 -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚙️ 课表设置</h3>
+                <button class="modal-close" data-modal="settingsModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>学期开始日期</label>
+                    <input type="date" id="semesterStart" required>
+                </div>
+                <div class="form-group">
+                    <label>总教学周数</label>
+                    <div class="week-selector">
+                        <button type="button" class="week-btn" id="weekMinus">−</button>
+                        <input type="number" id="totalWeeks" value="20" min="1" max="30" class="week-input">
+                        <button type="button" class="week-btn" id="weekPlus">+</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>当前教学周</label>
+                    <select id="currentWeek"></select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" data-modal="settingsModal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveSettings">保存设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

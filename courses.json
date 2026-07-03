@@ -1,0 +1,342 @@
+[
+  {
+    "courseName": "Linux Shell编程",
+    "teacher": "张虹霞",
+    "location": "A413软件综合实训室Ⅱ",
+    "dayOfWeek": 1,
+    "startTime": "08:10",
+    "endTime": "09:55",
+    "weeks": "9,16",
+    "color": "#E07A5F"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "A414软件综合实训室Ⅲ",
+    "dayOfWeek": 1,
+    "startTime": "08:10",
+    "endTime": "09:55",
+    "weeks": "17-18",
+    "color": "#3D405B"
+  },
+  {
+    "courseName": "Linux Shell编程",
+    "teacher": "张虹霞",
+    "location": "A406系统集成实训室Ⅱ",
+    "dayOfWeek": 1,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "5,7,8",
+    "color": "#3D405B"
+  },
+  {
+    "courseName": "数据库开发技术",
+    "teacher": "吴少强",
+    "location": "A419人工智能实训室Ⅲ",
+    "dayOfWeek": 1,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "9,16",
+    "color": "#81B29A"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "A414软件综合实训室Ⅲ",
+    "dayOfWeek": 1,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "17-18",
+    "color": "#F2CC8F"
+  },
+  {
+    "courseName": "Python程序设计",
+    "teacher": "周烨",
+    "location": "A404网络安全实训室Ⅱ",
+    "dayOfWeek": 1,
+    "startTime": "14:10",
+    "endTime": "15:55",
+    "weeks": "1-5,7-9,11-16",
+    "color": "#457B9D"
+  },
+  {
+    "courseName": "大学体育4",
+    "teacher": "吴维民",
+    "location": "网球场Ⅲ（八方）",
+    "dayOfWeek": 1,
+    "startTime": "16:10",
+    "endTime": "17:55",
+    "weeks": "1-5,8-9,11-18",
+    "color": "#81B29A"
+  },
+  {
+    "courseName": "前端框架技术",
+    "teacher": "苏尚海",
+    "location": "A408-A409专业基础实训室",
+    "dayOfWeek": 2,
+    "startTime": "08:10",
+    "endTime": "09:55",
+    "weeks": "1-9,11-16",
+    "color": "#81B29A"
+  },
+  {
+    "courseName": "毛泽东思想和中国特色社会主义理论体系概论",
+    "teacher": "郑维林",
+    "location": "A402软件综合实训室",
+    "dayOfWeek": 2,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "7,9,16",
+    "color": "#457B9D"
+  },
+  {
+    "courseName": "国家安全教育",
+    "teacher": "李汉宸",
+    "location": "A404网络安全实训室Ⅱ",
+    "dayOfWeek": 2,
+    "startTime": "14:10",
+    "endTime": "15:55",
+    "weeks": "16",
+    "color": "#E63946"
+  },
+  {
+    "courseName": "大学体育4",
+    "teacher": "吴维民",
+    "location": "网球场Ⅲ（八方）",
+    "dayOfWeek": 2,
+    "startTime": "19:10",
+    "endTime": "20:55",
+    "weeks": "17",
+    "color": "#1ABC9C"
+  },
+  {
+    "courseName": "毛泽东思想和中国特色社会主义理论体系概论",
+    "teacher": "郑维林",
+    "location": "B206教室",
+    "dayOfWeek": 3,
+    "startTime": "08:10",
+    "endTime": "09:55",
+    "weeks": "15",
+    "color": "#F2CC8F"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "B602人工智能实训室Ⅰ",
+    "dayOfWeek": 3,
+    "startTime": "08:10",
+    "endTime": "09:55",
+    "weeks": "17-18",
+    "color": "#457B9D"
+  },
+  {
+    "courseName": "计算机网络技术",
+    "teacher": "肖洋",
+    "location": "B316教室",
+    "dayOfWeek": 3,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "7-10",
+    "color": "#E63946"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "B602人工智能实训室Ⅰ",
+    "dayOfWeek": 3,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "17-18",
+    "color": "#9B59B6"
+  },
+  {
+    "courseName": "Python程序设计",
+    "teacher": "周烨",
+    "location": "A211教室",
+    "dayOfWeek": 4,
+    "startTime": "08:10",
+    "endTime": "09:55",
+    "weeks": "12,14,16",
+    "color": "#E63946"
+  },
+  {
+    "courseName": "Web开发技术",
+    "teacher": "林宗英",
+    "location": "A402软件综合实训室",
+    "dayOfWeek": 4,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "1-16",
+    "color": "#1ABC9C"
+  },
+  {
+    "courseName": "Web开发技术",
+    "teacher": "林宗英",
+    "location": "A402软件综合实训室",
+    "dayOfWeek": 4,
+    "startTime": "14:10",
+    "endTime": "15:55",
+    "weeks": "1-16",
+    "color": "#9B59B6"
+  },
+  {
+    "courseName": "毛泽东思想和中国特色社会主义理论体系概论",
+    "teacher": "郑维林",
+    "location": "A208教室",
+    "dayOfWeek": 4,
+    "startTime": "16:10",
+    "endTime": "17:55",
+    "weeks": "1-9,11",
+    "color": "#F2CC8F"
+  },
+  {
+    "courseName": "Python程序设计",
+    "teacher": "周烨",
+    "location": "A404网络安全实训室Ⅱ",
+    "dayOfWeek": 4,
+    "startTime": "19:10",
+    "endTime": "20:55",
+    "weeks": "6,10",
+    "color": "#E07A5F"
+  },
+  {
+    "courseName": "计算机网络技术",
+    "teacher": "肖洋",
+    "location": "A419人工智能实训室Ⅲ",
+    "dayOfWeek": 5,
+    "startTime": "08:10",
+    "endTime": "09:55",
+    "weeks": "1-8,10-15",
+    "color": "#9B59B6"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "B602人工智能实训室Ⅰ",
+    "dayOfWeek": 5,
+    "startTime": "08:10",
+    "endTime": "09:55",
+    "weeks": "17-18",
+    "color": "#1ABC9C"
+  },
+  {
+    "courseName": "数据库开发技术",
+    "teacher": "吴少强",
+    "location": "A402软件综合实训室",
+    "dayOfWeek": 5,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "1-8,10-15",
+    "color": "#E07A5F"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "B602人工智能实训室Ⅰ",
+    "dayOfWeek": 5,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "17-18",
+    "color": "#3D405B"
+  },
+  {
+    "courseName": "Linux Shell编程",
+    "teacher": "张虹霞",
+    "location": "A406系统集成实训室Ⅱ",
+    "dayOfWeek": 5,
+    "startTime": "14:10",
+    "endTime": "15:55",
+    "weeks": "1-5,10-15",
+    "color": "#1ABC9C"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "B602人工智能实训室Ⅰ",
+    "dayOfWeek": 5,
+    "startTime": "14:10",
+    "endTime": "15:55",
+    "weeks": "17-18",
+    "color": "#E07A5F"
+  },
+  {
+    "courseName": "前端框架技术",
+    "teacher": "苏尚海",
+    "location": "A403网络安全实训室Ⅰ",
+    "dayOfWeek": 5,
+    "startTime": "16:10",
+    "endTime": "17:55",
+    "weeks": "10",
+    "color": "#457B9D"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "B602人工智能实训室Ⅰ",
+    "dayOfWeek": 5,
+    "startTime": "16:10",
+    "endTime": "17:55",
+    "weeks": "17-18",
+    "color": "#E63946"
+  },
+  {
+    "courseName": "大学体育4",
+    "teacher": "吴维民",
+    "location": "网球场Ⅲ（八方）",
+    "dayOfWeek": 5,
+    "startTime": "19:10",
+    "endTime": "20:55",
+    "weeks": "8,10",
+    "color": "#3D405B"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "A414软件综合实训室Ⅲ",
+    "dayOfWeek": 6,
+    "startTime": "08:10",
+    "endTime": "09:55",
+    "weeks": "17-18",
+    "color": "#E07A5F"
+  },
+  {
+    "courseName": "毛泽东思想和中国特色社会主义理论体系概论",
+    "teacher": "郑维林",
+    "location": "A118教室",
+    "dayOfWeek": 6,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "10",
+    "color": "#81B29A"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "A414软件综合实训室Ⅲ",
+    "dayOfWeek": 6,
+    "startTime": "10:10",
+    "endTime": "11:55",
+    "weeks": "17-18",
+    "color": "#F2CC8F"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "A413软件综合实训室Ⅱ",
+    "dayOfWeek": 6,
+    "startTime": "14:10",
+    "endTime": "15:55",
+    "weeks": "17-18",
+    "color": "#3D405B"
+  },
+  {
+    "courseName": "Web开发技术综合实训",
+    "teacher": "蔡金程",
+    "location": "A413软件综合实训室Ⅱ",
+    "dayOfWeek": 6,
+    "startTime": "16:10",
+    "endTime": "17:55",
+    "weeks": "17-18",
+    "color": "#9B59B6"
+  }
+]

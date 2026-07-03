@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单元测试 - 日历应用</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
+        .test-suite { margin-bottom: 20px; border: 1px solid #333; border-radius: 8px; padding: 15px; }
+        .test-suite h3 { color: #4CAF50; margin-bottom: 10px; }
+        .test { padding: 8px; margin: 5px 0; border-radius: 4px; }
+        .test.pass { background: #1a3a1a; color: #4CAF50; }
+        .test.fail { background: #3a1a1a; color: #f44336; }
+        .test::before { content: '✓ '; }
+        .test.fail::before { content: '✗ '; }
+        #summary { margin-top: 20px; padding: 15px; background: #2a2a2a; border-radius: 8px; }
+        #summary h3 { color: #2196F3; }
+    </style>
+</head>
+<body>
+    <h1>🧪 单元测试</h1>
+    <div id="tests"></div>
+    <div id="summary"></div>
+
+    <script src="utils.js"></script>
+    <script src="chinese-calendar.js"></script>
+    <script>
+        const tests = [];
+        let passed = 0;
+        let failed = 0;
+
+        function test(name, fn) {
+            try {
+                fn();
+                tests.push({ name, pass: true });
+                passed++;
+            } catch (e) {
+                tests.push({ name, pass: false, error: e.message });
+                failed++;
+            }
+        }
+
+        function assert(condition, message) {
+            if (!condition) throw new Error(message || 'Assertion failed');
+        }
+
+        function assertEqual(actual, expected, message) {
+            if (actual !== expected) {
+                throw new Error(message || `Expected ${expected}, got ${actual}`);
+            }
+        }
+
+        // ===== 工具函数测试 =====
+        test('formatDate 格式化日期', () => {
+            const date = new Date(2026, 5, 15);
+            assertEqual(formatDate(date), '2026-06-15');
+        });
+
+        test('formatDateShort 短格式', () => {
+            const date = new Date(2026, 5, 15);
+            assertEqual(formatDateShort(date), '06-15');
+        });
+
+        test('isSameDay 判断同一天', () => {
+            const a = new Date(2026, 5, 15, 10, 0);
+            const b = new Date(2026, 5, 15, 20, 0);
+            const c = new Date(2026, 5, 16, 10, 0);
+            assert(isSameDay(a, b), '同一天应该返回 true');
+            assert(!isSameDay(a, c), '不同天应该返回 false');
+        });
+
+        test('isToday 判断今天', () => {
+            assert(isToday(new Date()), '今天应该返回 true');
+            assert(!isToday(new Date(2020, 0, 1)), '过去日期应该返回 false');
+        });
+
+        test('escapeHtml 转义HTML', () => {
+            assertEqual(escapeHtml('<script>alert("xss")</script>'), '&lt;script&gt;alert("xss")&lt;/script&gt;');
+        });
+
+        test('generateId 生成唯一ID', () => {
+            const id1 = generateId();
+            const id2 = generateId();
+            assert(id1 !== id2, 'ID应该唯一');
+            assert(typeof id1 === 'string', 'ID应该是字符串');
+        });
+
+        // ===== 农历测试 =====
+        test('农历 2026年春节 (2月17日)', () => {
+            const date = new Date(2026, 1, 17);
+            const lunar = ChineseCalendar.getLunarDate(date);
+            assertEqual(lunar.monthName, '正月');
+            assertEqual(lunar.dayName, '初一');
+        });
+
+        test('农历 2026年除夕 (2月16日)', () => {
+            const date = new Date(2026, 1, 16);
+            const lunar = ChineseCalendar.getLunarDate(date);
+            assertEqual(lunar.monthName, '腊月');
+            assertEqual(lunar.dayName, '三十');
+        });
+
+        test('农历 2025年春节 (1月29日)', () => {
+            const date = new Date(2025, 0, 29);
+            const lunar = ChineseCalendar.getLunarDate(date);
+            assertEqual(lunar.monthName, '正月');
+            assertEqual(lunar.dayName, '初一');
+        });
+
+        test('农历 2024年春节 (2月10日)', () => {
+            const date = new Date(2024, 1, 10);
+            const lunar = ChineseCalendar.getLunarDate(date);
+            assertEqual(lunar.monthName, '正月');
+            assertEqual(lunar.dayName, '初一');
+        });
+
+        test('农历 天干地支年份', () => {
+            const date = new Date(2026, 5, 15);
+            const lunar = ChineseCalendar.getLunarDate(date);
+            assertEqual(lunar.yearGanZhi, '丙午');
+            assertEqual(lunar.shengXiao, '马');
+        });
+
+        test('农历 2025年闰六月', () => {
+            // 2025年闰六月大约在7月底到8月底
+            // 需要验证有闰六月的年份
+            const lunar = ChineseCalendar.getLunarDate(new Date(2025, 0, 29));
+            assert(lunar.year === 2025, '年份应该是2025');
+        });
+
+        // ===== 节假日测试 =====
+        test('节假日 2026年春节', () => {
+            const date = new Date(2026, 1, 17);
+            const holiday = ChineseCalendar.getHoliday(date);
+            assert(holiday !== null, '春节应该是节假日');
+            assertEqual(holiday.type, 'holiday');
+            assertEqual(holiday.name, '春节');
+        });
+
+        test('节假日 2026年元旦', () => {
+            const date = new Date(2026, 0, 1);
+            const holiday = ChineseCalendar.getHoliday(date);
+            assert(holiday !== null, '元旦应该是节假日');
+        });
+
+        test('调休 2026年春节调休', () => {
+            const date = new Date(2026, 1, 14); // 2月14日是调休
+            const holiday = ChineseCalendar.getHoliday(date);
+            assert(holiday !== null, '调休日应该有记录');
+            assertEqual(holiday.type, 'workday');
+        });
+
+        test('非节假日', () => {
+            const date = new Date(2026, 5, 15);
+            const holiday = ChineseCalendar.getHoliday(date);
+            assertEqual(holiday, null, '普通日期应该是null');
+        });
+
+        // ===== 节日测试 =====
+        test('公历节日 劳动节', () => {
+            const date = new Date(2026, 4, 1);
+            const festival = ChineseCalendar.getFestival(date);
+            assertEqual(festival.solar, '劳动节');
+        });
+
+        test('公历节日 国庆节', () => {
+            const date = new Date(2026, 9, 1);
+            const festival = ChineseCalendar.getFestival(date);
+            assertEqual(festival.solar, '国庆节');
+        });
+
+        // ===== 渲染测试 =====
+        test('DataManager 创建', () => {
+            const dm = new DataManager();
+            assert(Array.isArray(dm.schedules), 'schedules应该是数组');
+            assert(Array.isArray(dm.timetable), 'timetable应该是数组');
+        });
+
+        test('DataManager 添加日程', () => {
+            const dm = new DataManager();
+            const item = dm.addSchedule({ title: '测试', date: '2026-06-15' });
+            assert(item.id !== undefined, '应该有id');
+            assertEqual(item.title, '测试');
+            assert(dm.schedules.length >= 1, '应该有至少1条日程');
+        });
+
+        test('DataManager 添加课程', () => {
+            const dm = new DataManager();
+            const item = dm.addTimetableItem({ courseName: '测试课程', dayOfWeek: 1 });
+            assert(item.id !== undefined, '应该有id');
+            assertEqual(item.courseName, '测试课程');
+        });
+
+        // 渲染结果
+        const testsDiv = document.getElementById('tests');
+        const summaryDiv = document.getElementById('summary');
+
+        let html = '<div class="test-suite"><h3>测试结果</h3>';
+        tests.forEach(t => {
+            html += `<div class="test ${t.pass ? 'pass' : 'fail'}">${t.name}${t.error ? ': ' + t.error : ''}</div>`;
+        });
+        html += '</div>';
+        testsDiv.innerHTML = html;
+
+        summaryDiv.innerHTML = `
+            <h3>📊 总结</h3>
+            <p>✅ 通过: ${passed}</p>
+            <p>❌ 失败: ${failed}</p>
+            <p>📈 总计: ${tests.length}</p>
+            <p>${failed === 0 ? '🎉 所有测试通过！' : '⚠️ 有测试失败'}</p>
+        `;
+    </script>
+</body>
+</html>

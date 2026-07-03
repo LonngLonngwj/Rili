@@ -1,0 +1,48 @@
+{
+  "name": "calendar-app",
+  "version": "1.0.0",
+  "description": "我的日历 - 日程与课程表管理",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win",
+    "dist": "electron-builder --win portable"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "electron": "^42.4.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.calendar.app",
+    "productName": "我的日历",
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "我的日历"
+    },
+    "files": [
+      "index.html",
+      "style.css",
+      "app.js",
+      "utils.js",
+      "chinese-calendar.js",
+      "main.js",
+      "node_modules/**/*"
+    ]
+  }
+}
